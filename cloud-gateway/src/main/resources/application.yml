@@ -5,26 +5,33 @@ spring:
   application:
     name: API-GATEWAY
   cloud:
-    gateway:
-      routes:
-        - id: USER-SERVICE
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/users/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: USER-SERVICE
-                fallbackuri: forward:/userServiceFallBack
-        - id: DEPARTMENT-SERVICE
-          uri: lb://DEPARTMENT-SERVICE
-          predicates:
-            - Path=/department/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: DEPARTMENT-SERVICE
-                fallbackuri: forward:/departmentServiceFallBack
+    loadbalancer:
+      ribbon:
+        enabled: false
+
+#Specifically for spring cloud default gateway but its commented as we added zuul gateway
+
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: USER-SERVICE
+#          uri: lb://USER-SERVICE
+#          predicates:
+#            - Path=/users/**
+#          filters:
+#            - name: CircuitBreaker
+#              args:
+#                name: USER-SERVICE
+#                fallbackuri: forward:/userServiceFallBack
+#        - id: DEPARTMENT-SERVICE
+#          uri: lb://DEPARTMENT-SERVICE
+#          predicates:
+#            - Path=/department/**
+#          filters:
+#            - name: CircuitBreaker
+#              args:
+#                name: DEPARTMENT-SERVICE
+#                fallbackuri: forward:/departmentServiceFallBack
 
 
 hystrix:
@@ -41,3 +48,19 @@ management:
     web:
       exposure:
         include: hystrix.stream
+eureka:
+  instance:
+    health-check-url-path:
+zuul:
+  routes:
+    USER-SERVICE:
+      path: /users/**
+      serviceId: USER-SERVICE
+      stripPrefix: false
+    DEPARTMENT-SERVICE:
+      path: /department/**
+      serviceId: DEPARTMENT-SERVICE
+      stripPrefix: false
+  sensitive-headers: Cookie,Set-Cookie
+  ignoredServices: '*'
+
