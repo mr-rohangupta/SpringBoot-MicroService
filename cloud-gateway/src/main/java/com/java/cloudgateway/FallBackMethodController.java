@@ -3,6 +3,7 @@ package com.java.cloudgateway;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+//TODO its commented as we moved from default gateway to zuul gateway
 @Deprecated
 @RestController
 public class FallBackMethodController {

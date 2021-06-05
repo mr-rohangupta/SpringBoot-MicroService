@@ -61,6 +61,10 @@ zuul:
       path: /department/**
       serviceId: DEPARTMENT-SERVICE
       stripPrefix: false
+    AUTH-SERVICE:
+      path: /auth/**
+      serviceId: AUTH-SERVICE
+      stripPrefix: false
   sensitive-headers: Cookie,Set-Cookie
   ignoredServices: '*'
 
